@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ArrowLeftRight, Copy, Check, Calculator } from "lucide-react";
+import { ArrowLeftRight, Copy, Check, Calculator, RotateCcw } from "lucide-react";
 import {
   ToolButton,
   ResetButton,
@@ -371,6 +371,13 @@ export default function UnitConverter() {
   const currentCategory = unitGroups[selectedCategory];
   const unitOptions = Object.entries(currentCategory.units);
 
+  const handleResetButton = () => {
+    setInputValue("1");
+    const units = Object.keys(unitGroups[selectedCategory].units);
+    setFromUnit(units[0]);
+    setToUnit(units[1] || units[0]);
+  };
+
   return (
     <div className="max-w-6xl mx-auto">
       {/* Header */}
@@ -439,8 +446,8 @@ export default function UnitConverter() {
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Input Section */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
-            <div>
+          <div className="grid grid-cols-1 md:[grid-template-columns:3fr_3fr_2fr_2fr] gap-4 items-end">
+          <div>
               <Label htmlFor="input-value">Value</Label>
               <Input
                 id="input-value"
@@ -471,7 +478,7 @@ export default function UnitConverter() {
             </div>
             <div>
               <Label htmlFor="to-unit">To</Label>
-              <div className="flex gap-2">
+              <div>
                 <Select value={toUnit} onValueChange={setToUnit}>
                   <SelectTrigger data-testid="to-unit-select">
                     <SelectValue />
@@ -484,6 +491,10 @@ export default function UnitConverter() {
                     ))}
                   </SelectContent>
                 </Select>
+            </div>
+            </div>
+            <div>
+              <div className="flex gap-2">
                 <Button
                   size="icon"
                   variant="outline"
@@ -491,7 +502,11 @@ export default function UnitConverter() {
                   data-testid="swap-units-button"
                   disabled={fromUnit === toUnit}
                 >
-                  <ArrowLeftRight className="w-4 h-4" />
+                <ArrowLeftRight className="w-7 h-5" />
+                </Button>
+                <Button variant="outline" onClick={handleResetButton}>
+                  <RotateCcw className="w-7 h-5 mr-3" />
+                  Reset
                 </Button>
               </div>
             </div>
